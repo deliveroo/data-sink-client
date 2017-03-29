@@ -21,8 +21,12 @@ Or install it yourself as:
 ## Usage
 
 ```
-client = Client.new(user: 'user', pass: 'pass', ...)
-client.post(stream_id, body) # or client.post_gzipped(stream_id, body) if body already compressed
+client = DataSink::Client.new(user: 'user', pass: 'pass', ...)
+client.post(stream_id, body)
+
+# or, if body already compressed:
+
+client.post_gzipped(stream_id, body)
 ```
 
 Options (with defaults):
