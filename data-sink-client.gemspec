@@ -5,12 +5,14 @@ require 'data-sink-client/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "data-sink-client"
+  spec.description   = "Client for data-sink"
   spec.version       = DataSinkClient::VERSION
   spec.authors       = ["Ivan Pirlik"]
   spec.email         = ["ivan.pirlik@deliveroo.co.uk"]
 
-  spec.summary       = %q{Client for data-sink}
+  spec.summary       = %q{Client for the data-sink service}
   spec.homepage      = "https://github.com/deliveroo/data-sink-client"
+  spec.license       = 'none'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -28,11 +30,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'faraday'
-  spec.add_dependency 'excon'
+  spec.add_dependency 'faraday', '~> 0.11.0'
+  spec.add_dependency 'excon', '~> 0.55.0'
 
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "webmock", "~> 2.1"
 end
