@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'faraday'
-require 'byebug'
 
 describe DataSink::Client do
   let(:options) { {user: user, pass: pass} }
