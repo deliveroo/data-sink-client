@@ -1,4 +1,4 @@
-# Data::Sink::Client
+# DataSink::Client
 
 A small client library for [data-sink](https://github.com/deliveroo/data-sink).
 
