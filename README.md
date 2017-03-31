@@ -1,8 +1,6 @@
 # Data::Sink::Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/data/sink/client`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A small client library for [data-sink](https://github.com/deliveroo/data-sink).
 
 ## Installation
 
@@ -22,7 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+client = DataSink::Client.new(user: 'user', pass: 'pass', ...)
+client.post(stream_id, body)
+
+# or, if body already compressed:
+
+client.post_gzipped(stream_id, body)
+```
+
+Options (with defaults):
+
+```
+url: 'https://data-sink-production.herokuapp.com/'
+endpoint: '/archives'
+retry_max: 2
+retry_interval: 0.1
+retry_backoff_factor: 2
+adapter: :excon
+read_timeout: 5
+open_timeout: 5
+```
+
+or pass a Faraday client yourself with `client:`.
 
 ## Development
 
@@ -32,5 +52,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/data-sink-client.
+Bug reports and pull requests are welcome on GitHub at https://github.com/deliveroo/data-sink-client.
 
