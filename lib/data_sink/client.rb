@@ -41,12 +41,12 @@ module DataSink
 
     def create_client(user, pass)
       Faraday.new(options[:url], ssl: { verify: true }) do |f|
-        f.adapter options[:adapter]
         f.headers['Content-Encoding'] = 'application/gzip'
         f.headers['Content-Type'] = 'application/octet-stream'
-        f.request :retry, max: options[:retry_max], interval: options[:retry_interval], backoff_factor: options[:retry_backoff_factor]
+        f.request :retry, methods: [:post], max: options[:retry_max], interval: options[:retry_interval], backoff_factor: options[:retry_backoff_factor]
         f.options.timeout = options[:read_timeout] if options[:read_timeout]
         f.options.open_timeout = options[:open_timeout] if options[:open_timeout]
+        f.adapter options[:adapter]
       end.tap do |client|
         client.basic_auth(user, pass)
       end
