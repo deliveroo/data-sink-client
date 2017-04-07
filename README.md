@@ -34,7 +34,7 @@ client.post_gzipped(stream_id, body)
 Options (with defaults):
 
 ```
-url: 'https://data-sink-production.herokuapp.com/'
+url: ''
 endpoint: '/archives'
 retry_max: 2
 retry_interval: 0.1
