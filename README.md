@@ -1,5 +1,7 @@
 # DataSink::Client
 
+[![Build Status](https://travis-ci.com/deliveroo/data-sink-client.svg?token=ssKSGhx3XHB81qd6SvHz&branch=master)](https://travis-ci.com/deliveroo/data-sink-client)
+
 A small client library for [data-sink](https://github.com/deliveroo/data-sink).
 
 ## Installation
@@ -32,7 +34,7 @@ client.post_gzipped(stream_id, body)
 Options (with defaults):
 
 ```
-url: 'https://data-sink-production.herokuapp.com/'
+url: ''
 endpoint: '/archives'
 retry_max: 2
 retry_interval: 0.1
