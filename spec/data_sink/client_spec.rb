@@ -75,7 +75,7 @@ describe DataSink::Client do
     end
 
     describe 'post' do
-      let(:compressed_body) { gzip(body) }
+      let(:compressed_body) { gzip(body+"\n") }
 
       let(:perform) { subject.post(stream_id, body) }
 
@@ -83,6 +83,17 @@ describe DataSink::Client do
         perform
         expect(WebMock).to have_requested(:post, "#{url}/#{endpoint}").
           with(body: compressed_body, headers: {'Content-Encoding' => 'application/gzip'})
+      end
+
+      context 'when add_newlines is false' do
+        let(:options) { super().merge(add_newlines: false) }
+        let(:compressed_body) { gzip(body) }
+
+        it 'posts the body without newlines' do
+          perform
+          expect(WebMock).to have_requested(:post, "#{url}/#{endpoint}").
+            with(body: compressed_body, headers: {'Content-Encoding' => 'application/gzip'})
+        end
       end
     end
   end

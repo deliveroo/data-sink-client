@@ -42,6 +42,7 @@ retry_backoff_factor: 2
 adapter: :excon
 read_timeout: 5
 open_timeout: 5
+add_newlines: true
 ```
 
 or pass a Faraday client yourself with `client:`.
