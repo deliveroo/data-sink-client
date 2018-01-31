@@ -11,6 +11,7 @@ module DataSink
       adapter: :excon,
       read_timeout: 5,
       open_timeout: 5,
+      add_newlines: true
     }.freeze
 
     attr_reader :client, :options
@@ -23,7 +24,7 @@ module DataSink
     end
 
     def post(stream_id, body)
-      post_gzipped(stream_id, gzip(body))
+      post_gzipped(stream_id, gzip(transform(body)))
     end
 
     def post_gzipped(stream_id, body)
@@ -49,6 +50,14 @@ module DataSink
         f.adapter options[:adapter]
       end.tap do |client|
         client.basic_auth(user, pass)
+      end
+    end
+
+    def transform(body)
+      if options[:add_newlines]
+        body + "\n"
+      else
+        body
       end
     end
 
