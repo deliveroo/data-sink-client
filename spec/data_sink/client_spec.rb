@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'faraday'
 
 describe DataSink::Client do
-  let(:options) { {user: user, pass: pass} }
+  let(:options) { {user: user, pass: pass, url: 'https://example.com'} }
   let(:user) { 'test-user' }
   let(:pass) { 'test-pass' }
   subject { described_class.new(options) }
@@ -27,6 +27,7 @@ describe DataSink::Client do
     let(:base) { 'archives' }
     let(:stream_id) { 'test-stream' }
     let(:endpoint) { "#{base}/#{stream_id}" }
+    let(:partition_key) { 'foobar' }
     let(:body) { 'body-content' }
     let(:options) { super().merge(
       url: url,
@@ -36,6 +37,7 @@ describe DataSink::Client do
 
     before do
       stub_request(:post, "#{url}/#{endpoint}")
+      stub_request(:post, "#{url}/#{endpoint}?partition_key=#{partition_key}")
     end
 
     describe 'post_gzipped' do
@@ -72,6 +74,16 @@ describe DataSink::Client do
           assert_requested :post, "#{url}/#{endpoint}", body: body, times: 3
         end
       end
+
+      context 'with a partition_key' do
+        let(:perform) { subject.post_gzipped(stream_id, body, partition_key: partition_key) }
+
+        it 'adds the partition_key to the requested URL' do
+          perform
+          expect(WebMock).to have_requested(:post, "#{url}/#{endpoint}?partition_key=#{partition_key}").
+            with(body: body, headers: {'Content-Encoding' => 'application/gzip'})
+        end
+      end
     end
 
     describe 'post' do
@@ -92,6 +104,16 @@ describe DataSink::Client do
         it 'posts the body without newlines' do
           perform
           expect(WebMock).to have_requested(:post, "#{url}/#{endpoint}").
+            with(body: compressed_body, headers: {'Content-Encoding' => 'application/gzip'})
+        end
+      end
+
+      context 'with a partition_key' do
+        let(:perform) { subject.post(stream_id, body, partition_key: partition_key) }
+
+        it 'adds the partition_key to the requested URL' do
+          perform
+          expect(WebMock).to have_requested(:post, "#{url}/#{endpoint}?partition_key=#{partition_key}").
             with(body: compressed_body, headers: {'Content-Encoding' => 'application/gzip'})
         end
       end

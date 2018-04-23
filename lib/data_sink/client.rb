@@ -23,21 +23,22 @@ module DataSink
       @client = options[:client] || create_client(user, pass)
     end
 
-    def post(stream_id, body)
-      post_gzipped(stream_id, gzip(transform(body)))
+    def post(stream_id, body, partition_key: nil)
+      post_gzipped(stream_id, gzip(transform(body)), partition_key: partition_key)
     end
 
-    def post_gzipped(stream_id, body)
+    def post_gzipped(stream_id, body, partition_key: nil)
       client.post do |req|
-        req.url endpoint(stream_id)
+        req.url endpoint(stream_id, partition_key)
         req.body = body
       end
     end
 
     private
 
-    def endpoint(stream_id)
-      [options[:endpoint], stream_id].join('/')
+    def endpoint(stream_id, partition_key)
+      path = [options[:endpoint], stream_id].join('/')
+      partition_key.nil? ? path : "#{path}?partition_key=#{partition_key}"
     end
 
     def create_client(user, pass)
