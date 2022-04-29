@@ -50,7 +50,7 @@ module DataSink
         f.options.open_timeout = options[:open_timeout] if options[:open_timeout]
         f.adapter options[:adapter]
       end.tap do |client|
-        client.basic_auth(user, pass)
+        client.request(:basic_auth, user, pass)
       end
     end
 
